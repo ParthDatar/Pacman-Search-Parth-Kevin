@@ -305,14 +305,14 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition, (False, False, False, False))
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (state[1].count(False) == 0)
 
     def getSuccessors(self, state):
         """
@@ -326,6 +326,9 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
+        x,y = state[0]
+        
+        
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -335,6 +338,15 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            left = list(state[1])
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if((nextx, nexty) in self.corners):
+                left[self.corners.index((nextx, nexty))] = True
+                
+            hitsWall = self.walls[nextx][nexty]
+            if not(hitsWall):
+                successors.append((((nextx, nexty), tuple(left)), action, 1))
 
         self._expanded += 1  # DO NOT CHANGE
         return successors
@@ -370,7 +382,16 @@ def cornersHeuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0  # Default to trivial solution
+    cor = []
+    for i in range(len(corners)):
+        if(state[1][i]):
+            cor.append(corners[i])
+    dist = [util.manhattanDistance(state[0], j) for j in cor]
+    
+    if(len(dist) > 0):
+        return min(dist)
+    else:
+        return 0
 
 
 class AStarCornersAgent(SearchAgent):
