@@ -234,7 +234,8 @@ class Grid:
         list = []
         for x in range(self.width):
             for y in range(self.height):
-                if self[x][y] == key: list.append((x, y))
+                if self[x][y] == key:
+                    list.append((x, y))
         return list
 
     def packBits(self):
@@ -691,10 +692,10 @@ class Game:
                     if move_time > self.rules.getMoveWarningTime(agentIndex):
                         self.totalAgentTimeWarnings[agentIndex] += 1
                         print("Agent %d took too long to make a move! This is warning %d" % (
-                        agentIndex, self.totalAgentTimeWarnings[agentIndex]), file=sys.stderr)
+                            agentIndex, self.totalAgentTimeWarnings[agentIndex]), file=sys.stderr)
                         if self.totalAgentTimeWarnings[agentIndex] > self.rules.getMaxTimeWarnings(agentIndex):
                             print("Agent %d exceeded the maximum number of warnings: %d" % (
-                            agentIndex, self.totalAgentTimeWarnings[agentIndex]), file=sys.stderr)
+                                agentIndex, self.totalAgentTimeWarnings[agentIndex]), file=sys.stderr)
                             self.agentTimeout = True
                             self._agentCrash(agentIndex, quiet=True)
                             self.unmute()

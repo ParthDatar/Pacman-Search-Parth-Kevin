@@ -193,7 +193,7 @@ class TestCase(object):
         regularCredit = points - extraCredit
 
         grades.addMessage('%s: %s (%s of %s points)' % (
-        "PASS" if points >= maxPoints else "FAIL", self.path, regularCredit, maxPoints))
+            "PASS" if points >= maxPoints else "FAIL", self.path, regularCredit, maxPoints))
         if extraCredit > 0:
             grades.addMessage('EXTRA CREDIT: %s points' % (extraCredit,))
 

@@ -398,10 +398,10 @@ class PacmanGraphics:
                              screen_y - self.gridSize * GHOST_SIZE * (0.3 - dy / 1.5)),
                    self.gridSize * GHOST_SIZE * 0.2)
         moveCircle(eyes[2], (
-        screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y - self.gridSize * GHOST_SIZE * (0.3 - dy)),
+            screen_x + self.gridSize * GHOST_SIZE * (-0.3 + dx), screen_y - self.gridSize * GHOST_SIZE * (0.3 - dy)),
                    self.gridSize * GHOST_SIZE * 0.08)
         moveCircle(eyes[3], (
-        screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y - self.gridSize * GHOST_SIZE * (0.3 - dy)),
+            screen_x + self.gridSize * GHOST_SIZE * (0.3 + dx), screen_y - self.gridSize * GHOST_SIZE * (0.3 - dy)),
                    self.gridSize * GHOST_SIZE * 0.08)
 
     def moveGhost(self, ghost, ghostIndex, prevGhost, ghostImageParts):

@@ -33,6 +33,7 @@ description for details.
 
 Good luck and happy searching!
 """
+import math
 
 from game import Directions
 from game import Agent
@@ -305,14 +306,14 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        return (self.startingPosition, (False, False, False, False))
+        return self.startingPosition, (False, False, False, False)
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        return (state[1].count(False) == 0)
+        return state[1].count(False) == 0
 
     def getSuccessors(self, state):
         """
@@ -326,9 +327,8 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
-        x,y = state[0]
-        
-        
+        x, y = state[0]
+
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -341,11 +341,11 @@ class CornersProblem(search.SearchProblem):
             left = list(state[1])
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
-            if((nextx, nexty) in self.corners):
+            if (nextx, nexty) in self.corners:
                 left[self.corners.index((nextx, nexty))] = True
-                
+
             hitsWall = self.walls[nextx][nexty]
-            if not(hitsWall):
+            if not hitsWall:
                 successors.append((((nextx, nexty), tuple(left)), action, 1))
 
         self._expanded += 1  # DO NOT CHANGE
@@ -384,11 +384,11 @@ def cornersHeuristic(state, problem):
     "*** YOUR CODE HERE ***"
     cor = []
     for i in range(len(corners)):
-        if(state[1][i]):
+        if state[1][i]:
             cor.append(corners[i])
     dist = [util.manhattanDistance(state[0], j) for j in cor]
-    
-    if(len(dist) > 0):
+
+    if len(dist) > 0:
         return min(dist)
     else:
         return 0
@@ -492,7 +492,9 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    x, y = position
+
+    return max(map(lambda food: util.manhattanDistance(position, food), foodGrid.asList()), default=0)
 
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -525,7 +527,11 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        agent = SearchAgent()
+        agent.searchFunction = lambda prob: search.aStarSearch(prob)
+        agent.searchType = AnyFoodSearchProblem
+        agent.registerInitialState(gameState)
+        return agent.actions
 
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -562,7 +568,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x, y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.food[x][y]
 
 
 def mazeDistance(point1, point2, gameState):
